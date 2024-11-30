@@ -1,0 +1,62 @@
+trigger:
+- main  # Replace with your default branch name
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  pythonVersion: '3.9'
+
+steps:
+# Step 1: Check out the medLLM repository
+- task: UsePythonVersion@1
+  inputs:
+    versionSpec: '$(pythonVersion)'
+    addToPath: true
+
+- task: Checkout@1
+
+# Step 2: Install dependencies for medLLM
+- script: |
+    python -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+  displayName: 'Install dependencies for medLLM'
+
+# Step 3: Run tests for medLLM
+- script: |
+    source venv/bin/activate
+    python -m unittest discover -s tests
+  displayName: 'Run medLLM tests'
+
+# Step 4: Clone BreakYourLLM repository
+- script: |
+    git clone https://github.com/ModelPulse/BreakYourLLM.git
+    cd BreakYourLLM
+    python -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+  displayName: 'Clone and setup BreakYourLLM'
+
+# Step 5: Replace configurations in BreakYourLLM
+- script: |
+    cp medLLM/config/user_config1.json BreakYourLLM/config/config1.json
+    cp medLLM/config/user_config2.json BreakYourLLM/config/config2.json
+  displayName: 'Replace BreakYourLLM configurations'
+
+# Step 6: Run main.py in BreakYourLLM
+- script: |
+    cd BreakYourLLM
+    source venv/bin/activate
+    python main.py
+  displayName: 'Run BreakYourLLM main.py'
+
+# Step 7: Check Results
+- script: |
+    if grep -q '"status": "pass"' BreakYourLLM/results/stage5_metric_evaluation.json; then
+      echo "Build Passed"
+    else
+      echo "Build Failed"
+      exit 1
+    fi
+  displayName: 'Check results of BreakYourLLM'
