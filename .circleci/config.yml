@@ -20,12 +20,13 @@ jobs:
             python -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
+            curl "${medLLM_config_file_azure}"" -o .env
 
       # Step 3: Clone BreakYourLLM repository
       - run:
           name: Clone BreakYourLLM Repository
           command: |
-            git clone https://$GITHUB_TOKEN@github.com/ModelPulse/BreakYourLLM.git
+            git clone https://${GITHUB_TOKEN}@github.com/ModelPulse/BreakYourLLM.git
             cd BreakYourLLM
             python -m venv venv
             . venv/bin/activate
@@ -35,9 +36,8 @@ jobs:
       - run:
           name: Replace Configurations
           command: |
-            cp medLLM/config/user_config1.json BreakYourLLM/config/config1.json
-            cp medLLM/config/user_config2.json BreakYourLLM/config/config2.json
-
+            curl "${breakyourllm_config}"" -o BreakYourLLM/config/.env
+      
       # Step 5: Run main.py in BreakYourLLM
       - run:
           name: Run main.py in BreakYourLLM
@@ -50,10 +50,10 @@ jobs:
       - run:
           name: Check Results
           command: |
-            if grep -q '"status": "pass"' BreakYourLLM/results/stage5_metric_evaluation.json; then
-              echo "Build Passed"
-            else
+            if grep -q '"status": "error"' BreakYourLLM/results/stage5_metric_evaluation.json; then
               echo "Build Failed"
+            else
+              echo "Build Passed"
               exit 1
             fi
 
