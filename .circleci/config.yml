@@ -20,7 +20,7 @@ jobs:
             python -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
-            curl "${medLLM_config_file_azure}"" -o .env
+            curl "${medLLM_config_file_azure}" -o .env
 
       # Step 3: Clone BreakYourLLM repository
       - run:
@@ -36,7 +36,7 @@ jobs:
       - run:
           name: Replace Configurations
           command: |
-            curl "${breakyourllm_config}"" -o BreakYourLLM/config/.env
+            curl "${breakyourllm_config}" -o BreakYourLLM/config/.env
       
       # Step 5: Run main.py in BreakYourLLM
       - run:
