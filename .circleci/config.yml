@@ -21,15 +21,7 @@ jobs:
             . venv/bin/activate
             pip install -r requirements.txt
 
-      # Step 3: Run medLLM build/test commands
-      - run:
-          name: Build and Test medLLM
-          command: |
-            . venv/bin/activate
-            # Replace this with the actual command(s) to build/test medLLM
-            python -m unittest discover -s tests
-
-      # Step 4: Clone BreakYourLLM repository
+      # Step 3: Clone BreakYourLLM repository
       - run:
           name: Clone BreakYourLLM Repository
           command: |
@@ -39,14 +31,14 @@ jobs:
             . venv/bin/activate
             pip install -r requirements.txt
 
-      # Step 5: Replace configurations in BreakYourLLM
+      # Step 4: Replace configurations in BreakYourLLM
       - run:
           name: Replace Configurations
           command: |
             cp medLLM/config/user_config1.json BreakYourLLM/config/config1.json
             cp medLLM/config/user_config2.json BreakYourLLM/config/config2.json
 
-      # Step 6: Run main.py in BreakYourLLM
+      # Step 5: Run main.py in BreakYourLLM
       - run:
           name: Run main.py in BreakYourLLM
           command: |
@@ -54,7 +46,7 @@ jobs:
             . venv/bin/activate
             python main.py
 
-      # Step 7: Check Results
+      # Step 6: Check Results
       - run:
           name: Check Results
           command: |

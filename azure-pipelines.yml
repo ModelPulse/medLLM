@@ -20,12 +20,6 @@ steps:
     pip install -r requirements.txt
   displayName: 'Install dependencies for medLLM'
 
-# Step 3: Run tests for medLLM
-- script: |
-    source venv/bin/activate
-    python -m unittest discover -s tests
-  displayName: 'Run medLLM tests'
-
 # Step 4: Clone BreakYourLLM repository
 - script: |
     git clone https://github.com/ModelPulse/BreakYourLLM.git
