@@ -9,7 +9,7 @@ variables:
 
 steps:
 # Step 1: Check out the medLLM repository
-- task: UsePythonVersion@1
+- task: UsePythonVersion@0
   inputs:
     versionSpec: '$(pythonVersion)'
     addToPath: true
