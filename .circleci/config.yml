@@ -44,7 +44,7 @@ jobs:
           command: |
             cd BreakYourLLM
             . venv/bin/activate
-            python main.py
+            python main.py --file="../data.csv"
 
       # Step 6: Check Results
       - run:
