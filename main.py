@@ -7,7 +7,7 @@ import os
 import requests
 
 # Replace this with your OpenAI API key
-load_dotenv(dotenv_path=".env")  # Loads the .env file
+load_dotenv(dotenv_path="config/medLLM.env")  # Loads the .env file
 
 from routers.answer import answer_router
 from fastapi.middleware.cors import CORSMiddleware
@@ -21,7 +21,7 @@ app.include_router(answer_router, prefix="")
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3005"],  # Or use ["*"] to allow all origins (for development only)
+    allow_origins=["http://localhost:3000"],  # Or use ["*"] to allow all origins (for development only)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
